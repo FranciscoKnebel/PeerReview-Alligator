@@ -1,20 +1,41 @@
 package Interface;
 
 public class ChairHelperUI implements ChairHelperInterface {
+	
+	private int op; //mudança
+	private Database database;
+	
+	public ChairHelperUI(Database database) {
+		this.database = database;
+	}
 
-	public ChairHelperUI(Database database){
+	public void createAndShowUI() {
+
+		requestInfo();
+		askCommand();
+		
+		switch (op) {
+			case 1: ReviewPaperCommand comando123 = new ReviewPaperCommand( Database ); //duvida
+					
+			case 2: // case2
+			case 3: // c
+		}
+
+	}
+
+	private int requestInfo() {
+		
+		System.out.println("O que você deseja fazer?\n");
+		System.out.println("(1)Atribuir Notas\n(2)Seleção de Artigos\n(3)Alocação de Artigos a Membros do Comitê\n");
+		
 		
 	}
-	
-	public void createAndShowUI(){
+
+	private void askCommand() { //mudança
+		
+		Scanner scanner = new Scanner(System.in);
+		op = scanner.nextInt(); // ask command
 		
 	}
-	
-	private void requestInfo(){
-		
-	}
-	
-	private void askCommand(){
-		
-	}
+
 }

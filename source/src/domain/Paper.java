@@ -35,4 +35,9 @@ public class Paper {
 	public void setReviewGrade(Researcher reviewer, float grade) {
 
 	}
+	
+	public void showReviewers() { //mudanca
+									
+		
+	}
 }
