@@ -15,11 +15,13 @@ public class ChairHelperUI implements ChairHelperInterface {
 		askCommand();
 		
 		switch (op) {
-			case 1: ReviewPaperCommand comando123 = new ReviewPaperCommand( Database ); //duvida
+			case 1: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida
 					
-			case 2: // case2
+			case 2: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida// case2
 			case 3: // c
 		}
+		
+		command123.execute();
 
 	}
 
