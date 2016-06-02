@@ -1,32 +1,69 @@
 package domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Paper {
+
 	private int id;
 	private String title;
 	private Researcher author;
 	private String researchTopic;
 	private String conference;
-	private List<Review> reviewList;
+	private List<Review> reviewsList;
 
+	public Paper(int id, String title, Researcher author, String conference, String researchTopic) { // mudanca
+
+		this.id = id;
+		this.title = title;
+		this.author = author;
+		this.conference = conference;
+		this.researchTopic = researchTopic;
+		this.reviewsList = new ArrayList<Review>();
+
+	}
 	
+	public List<Review> getReviewsList() {
+		return reviewsList;
+	}
+	
+	public String getConference() {
+		return conference;
+	}
 
-	public Paper(int id, String title, int author, Conference conference, String reasearchTopic) {
+	public int getId(){
+		return this.id;
+	}
+	
+	
+	
+	public List<Researcher> getReviewers() { // mudança
+		List<Researcher> reviewersList = new ArrayList<Researcher>();
 
+		for (Review review : reviewsList) {
+			reviewersList.add(review.getReviewer());
+		}
+		return reviewersList;
 	}
 
 	public float getMeanGrade() {
-		return 10; // COMENTARIO MT HORRIVEL, TIRAR
+		float meanGrade = 0;
+
+		for (Review review : reviewsList) {
+			meanGrade += review.getGrade();
+		}
+
+		meanGrade = meanGrade / reviewsList.size();
+		return meanGrade;
 	}
 
 	public void addReviewer(Researcher reviewer) {
 		Review newReview = new Review(reviewer);
-		reviewList.add(newReview);
+		reviewsList.add(newReview);
 	}
 
-	public int getAuthor() {
-		return author; // seria o id?
+	public Researcher getAuthor() {
+		return author;
 	}
 
 	public String getResearchTopic() {
@@ -34,8 +71,8 @@ public class Paper {
 	}
 
 	public boolean checkReviews() {
-		for (int i = 0; i < reviewList.size(); i++){
-			if(reviewList.get(i).isConcluded() == false){
+		for (Review review : reviewsList) {
+			if (review.isConcluded() == false) {
 				return false;
 			}
 		}
@@ -43,14 +80,41 @@ public class Paper {
 	}
 
 	public boolean isAllocated() {
-		
+		if (conference != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	public void setReviewGrade(Researcher reviewer, float grade) { //
+		for (Review review : reviewsList) {
+			if (review.getReviewer() == reviewer) {
+				review.setGrade(grade);
+			}
+			else 
+			
+		}
+
+	}
+	
+	public void addReviewToList(Researcher reviewer, float grade) {
+		 reviewsList.add(new Review(reviewer, grade));
 	}
 
-	public void setReviewGrade(Researcher reviewer, float grade) {
 
-	}
 
-	public void showReviewers() { // mudanca
+	public List<Review> getNotConcludedReviewsList() { // mudanca --->>era o
+														// showReviewers
 
+		List<Review> notConcludedReviewsList = new ArrayList<Review>();
+
+		for (Review review : reviewsList) {
+			if (!review.isConcluded()) {
+				notConcludedReviewsList.add(review);
+			}
+		}
+
+		return notConcludedReviewsList;
 	}
 }

@@ -1,9 +1,29 @@
 package domain;
 
+import java.util.List;
+
 public class Database {
 
-	public Database() {
+	private final List<Conference> conferencesList;
+	private final List<Paper> papersList;
+	private final List<Researcher> researchersList;
 
+	public Database() {
+		initData();
+	}
+
+	private void initData() {
+		conferencesList.add(0, new Conference() );
+		conferencesList.add(1, new Conference() );
+		conferencesList.add(2, new Conference() );
+		
+		papersList.add(0, new Paper() );
+		papersList.add(1, new Paper() );
+		papersList.add(2, new Paper() );
+		
+		researchersList.add(0, new Researcher() );
+		researchersList.add(1, new Researcher() );
+		researchersList.add(2, new Researcher() );
 	}
 
 	public Collection<Conference> getAllConferences() {
@@ -31,7 +51,7 @@ public class Database {
 		
 	}
 
-	public void saveResearcher(Researcher : researcher) {
+	public void saveResearcher(Researcher researcher) {
 		
 	}
 }

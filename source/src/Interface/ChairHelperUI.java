@@ -7,6 +7,7 @@ public class ChairHelperUI implements ChairHelperInterface {
 	
 	public ChairHelperUI(Database database) {
 		this.database = database;
+		createAndShowUI();
 	}
 
 	public void createAndShowUI() {
@@ -18,8 +19,7 @@ public class ChairHelperUI implements ChairHelperInterface {
 			case 1: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida
 					
 			case 2: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida// case2
-			case 3: // c
-		}
+			case 3: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida// case2
 		
 		command123.execute();
 

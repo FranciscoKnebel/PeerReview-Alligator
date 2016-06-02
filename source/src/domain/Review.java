@@ -1,20 +1,33 @@
 package domain;
 
 public class Review {
-	private Researcher researcher;
+	
+	private Researcher reviewer;
 	private float grade;
 	private boolean isConcluded;
 	
+	public Review(Researcher reviewer, float grade) {
+		if(this.reviewer == null) {
+			this.reviewer = reviewer;
+		}
+		reviewer.incrementNumberOfReviews();
+		reviewer.decrementNumberOfReviews();
+	}
+
 	public Review(Researcher reviewer) {
-		this.researcher = reviewer;
+		if(this.reviewer == null) {
+			this.reviewer = reviewer;
+		}
+		reviewer.incrementNumberOfReviews();
+		reviewer.decrementNumberOfReviews();
 	}
-
+	
 	public float getGrade() {
-		return grade;
+		return this.grade;
 	}
 
-	public Researcher getResearcher() {
-		return researcher;
+	public Researcher getReviewer() {
+		return reviewer;
 	}
 
 	public void setReviewStatus(boolean status) {
@@ -29,4 +42,5 @@ public class Review {
 	public void setGrade(float grade) {
 		this.grade = grade;
 	}
+	
 }
