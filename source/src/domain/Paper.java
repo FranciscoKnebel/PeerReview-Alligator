@@ -92,7 +92,7 @@ public class Paper {
 			if (review.getReviewer() == reviewer) {
 				review.setGrade(grade);
 			}
-			else 
+			else {}
 			
 		}
 

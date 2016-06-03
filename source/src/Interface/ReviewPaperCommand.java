@@ -1,7 +1,10 @@
 package Interface;
 
-import domain.Collection;
+import java.util.Collection;
+
+import domain.Database;
 import domain.Paper;
+import domain.Review;
 
 public class ReviewPaperCommand extends AbstractChairHelperCommand {
 
@@ -11,7 +14,7 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	private Paper selectedPaper;
 
 	private String selectedReviewerName; // mudança
-	private Reviewer selectedReviewer;
+	private Review selectedReviewer;
 
 	private Float selectedGrade;
 
@@ -31,7 +34,7 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	}
 
 	void setReviewGrade(Researcher reviewer, Float grade) {
-		for (i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
+		for (int i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
 			if (selectedPaper.reviews[i].researcher.equals(reviewer)) {
 				selectedPaper.reviews[i].setGrade(selectedGrade);
 				selectedPaper.reviews[i].setReviewStatus(true);
@@ -58,7 +61,7 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	}
 
 	private void showReviewers() {
-		for (i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
+		for (int i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
 			System.out.println(selectedPaper.reviews[i].researcher.name + "\n");
 		}
 	}

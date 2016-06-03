@@ -1,5 +1,7 @@
 package Interface;
 
+import domain.Database;
+
 public class ChairHelperUI implements ChairHelperInterface {
 	
 	private int op; //mudança
