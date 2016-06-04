@@ -1,9 +1,11 @@
 package Interface;
 
 import java.util.Collection;
+import java.util.Scanner;
 
 import domain.Database;
 import domain.Paper;
+import domain.Researcher;
 import domain.Review;
 
 public class ReviewPaperCommand extends AbstractChairHelperCommand {
@@ -14,9 +16,11 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	private Paper selectedPaper;
 
 	private String selectedReviewerName; // mudança
-	private Review selectedReviewer;
+	private Researcher selectedReviewer;
 
 	private Float selectedGrade;
+	
+	private Scanner scanner;
 
 	public void execute() {
 		paperList = database.getAllPapers();
@@ -75,7 +79,7 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	}
 
 	private Researcher searchReviewer() {
-		for (i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
+		for (int i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
 			if (selectedPaper.reviews[i].researcher.name == selectedResearcherName) {
 				return selectedPaper.reviews[i].researcher;
 			}
@@ -84,13 +88,14 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 
 	private void askPaper() {
 		System.out.println("paper:");
-		Scanner scanner = new Scanner(System.in);
-		selectedPaperName = scanner.nextString(); // ask paper
+		scanner = new Scanner(System.in);
+		selectedPaperName = scanner.next(); // ask paper
+		scanner.close();
 	}
 
 	private void askGrade() {
-		selectedGrade = -4; //magic number
-		Scanner scanner = new Scanner(System.in);
+		selectedGrade = (float) -4; //magic number
+		scanner = new Scanner(System.in);
 		while (selectedGrade < -3 || selectedGrade > 3) {
 			System.out.println("grade (-3 to 3):"); // implementar teste
 			selectedGrade = scanner.nextFloat();
@@ -98,11 +103,13 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 				System.out.println("please, insert a valid grade\n"); 
 			}
 		}
+		scanner.close();
 	}
 
 	private void askReviewer() {
-		System.out.println("reviewer:");
-		Scanner scanner = new Scanner(System.in);
-		selectedReviewerName = scanner.nextString(); // ask reviewer
+		System.out.println("reviewer: ");
+		scanner = new Scanner(System.in);
+		selectedReviewerName = scanner.next(); // ask reviewer
+		scanner.close();
 	}
 }

@@ -1,45 +1,62 @@
 package Interface;
 
+import Interface.ui.text.UIUtils;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import Interface.ui.TextManager;
 import domain.Database;
 
 public class ChairHelperUI implements ChairHelperInterface {
-	
-	private int op; //mudança
-	private Database database;
-	
+	public static final String EXIT_CODE = "E";
+
+	protected Map<String, AbstractChairHelperCommand> actions;
+
 	public ChairHelperUI(Database database) {
-		this.database = database;
+		this.actions = new LinkedHashMap<>();
+		this.addAction("A", new ConferenceAllocateCommand(database));
+		this.addAction("S", new ReviewPaperCommand(database));
+		this.addAction("D", new ConferenceReviewsResultCommand(database));
+		
 		createAndShowUI();
 	}
 
 	public void createAndShowUI() {
-
-		requestInfo();
-		askCommand();
+		UIUtils uiUtils = UIUtils.INSTANCE;
+		String commandKey = null;
 		
-		switch (op) {
-			case 1: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida
-					
-			case 2: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida// case2
-			case 3: ReviewPaperCommand command123 = new ReviewPaperCommand( Database ); //duvida// case2
-		
-		command123.execute();
-
-	}
-
-	private int requestInfo() {
-		
-		System.out.println("O que você deseja fazer?\n");
-		System.out.println("(1)Atribuir Notas\n(2)Seleção de Artigos\n(3)Alocação de Artigos a Membros do Comitê\n");
-		
+		do {
+			System.out.println();
+			System.out.print(getMenu(uiUtils.getTextManager()));
+			commandKey = uiUtils.readString(null);
+			AbstractChairHelperCommand command = actions.get(commandKey);
+			if(command != null) {
+				try {
+					command.execute();					
+				} catch (Exception e) {
+					uiUtils.handleUnexceptedError(e);
+				}
+			}
+		} while(!EXIT_CODE.equals(commandKey));
 		
 	}
 
-	private void askCommand() { //mudança
-		
-		Scanner scanner = new Scanner(System.in);
-		op = scanner.nextInt(); // ask command
-		
+	protected String getMenu(TextManager textManager) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(textManager.getText("message.options", EXIT_CODE, false)).append(":\n");
+		for (String key : actions.keySet()) {
+			AbstractChairHelperCommand action = actions.get(key);
+			sb.append(key).append(" - ").append(textManager.getText(action.getClass()
+					.getSimpleName())).append("\n");
+		}
+		sb.append(textManager.getText("message.choose.option")).append(": ");
+
+		return sb.toString();
+	}
+	
+	protected void addAction(String code, AbstractChairHelperCommand action) {
+		this.actions.put(code, action);
 	}
 
 }

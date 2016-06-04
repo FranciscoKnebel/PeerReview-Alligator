@@ -1,5 +1,7 @@
 package Interface;
 
+import domain.Database;
+
 public class ChairHelper {
 	
 	public void main(String args){

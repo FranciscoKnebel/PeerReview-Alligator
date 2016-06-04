@@ -1,5 +1,6 @@
 package Interface;
 
-public interface ChairHelperInterface {
 
+public interface ChairHelperInterface {
+	
 }
