@@ -35,6 +35,9 @@ public class Paper {
 		return this.id;
 	}
 	
+	public String getTitle() {
+		return this.title;
+	}
 	
 	
 	public List<Researcher> getReviewers() { // mudança
@@ -117,4 +120,11 @@ public class Paper {
 
 		return notConcludedReviewsList;
 	}
+	
+	public void showReviewers() {  //voltou pra ca
+		for (int i = 0; i < reviewsList.size(); i++) {
+			System.out.println( reviewsList.get(i).getReviewer().getName() + "\n");
+		}
+	}
+
 }

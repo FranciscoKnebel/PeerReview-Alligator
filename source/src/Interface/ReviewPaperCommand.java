@@ -1,6 +1,7 @@
 package Interface;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
 
 import domain.Database;
@@ -13,6 +14,8 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	private Collection<Paper> paperList; // mudança
 	private Database database;
 	private String selectedPaperName; // mudança
+	
+	private String selectedPaperTitle;
 	private Paper selectedPaper;
 
 	private String selectedReviewerName; // mudança
@@ -38,10 +41,10 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	}
 
 	void setReviewGrade(Researcher reviewer, Float grade) {
-		for (int i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
-			if (selectedPaper.reviews[i].researcher.equals(reviewer)) {
-				selectedPaper.reviews[i].setGrade(selectedGrade);
-				selectedPaper.reviews[i].setReviewStatus(true);
+		for (int i = 0; i < selectedPaper.getReviewsList().size(); i++) { // mudança
+			if (selectedPaper.getReviewsList().get(i).getReviewer().getName().equals(reviewer)) {
+				selectedPaper.getReviewsList().get(i).setGrade(selectedGrade);
+				selectedPaper.getReviewsList().get(i).setReviewStatus(true);
 			}
 		}
 	}
@@ -58,32 +61,28 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 		for (Paper paper : paperList) { // mudança
 			if(paper.isAllocated()) {
 				System.out.println( i ); // falar com INGRID TUPAC
-				System.out.println(paper.title);
+				System.out.println(paper.getTitle());
 				i++;
 			}
 		}
 	}
-
-	private void showReviewers() {
-		for (int i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
-			System.out.println(selectedPaper.reviews[i].researcher.name + "\n");
-		}
-	}
-
+	
 	private Paper searchPaper() {
 		for (Paper paper : paperList) { // mudança
-			if (paper.title == selectedPaper) {
+			if (paper.getTitle() == selectedPaperName) {
 				return paper;
 			}
 		}
+		return null;
 	}
 
 	private Researcher searchReviewer() {
-		for (int i = 0; i < selectedPaper.reviews.size(); i++) { // mudança
-			if (selectedPaper.reviews[i].researcher.name == selectedResearcherName) {
-				return selectedPaper.reviews[i].researcher;
+		for (int i = 0; i < selectedPaper.getReviewsList().size(); i++) { // mudança
+			if (selectedPaper.getReviewsList().get(i).getReviewer().getName() == selectedReviewerName) {
+				return selectedPaper.getReviewsList().get(i).getReviewer();
 			}
 		}
+		return null;
 	}
 
 	private void askPaper() {

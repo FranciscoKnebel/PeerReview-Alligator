@@ -36,6 +36,10 @@ public class Researcher {
 	public String getAffiliation() {
 		return affiliation;
 	}
+	
+	public String getName() {
+		return this.name;
+	}
 
 	public List<String> getResearchTopics() {
 		return researchTopics;

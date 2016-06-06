@@ -25,9 +25,10 @@ public class Review {
 	public float getGrade() {
 		return this.grade;
 	}
+	
 
 	public Researcher getReviewer() {
-		return reviewer;
+		return this.reviewer;
 	}
 
 	public void setReviewStatus(boolean status) {
