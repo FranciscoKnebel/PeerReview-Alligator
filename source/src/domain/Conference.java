@@ -54,19 +54,19 @@ public class Conference {
 	}
 
 	private Paper getFirstPaper(List<Paper> papers) {
-
+		return papers.get(0);
 	}
 
 	private Researcher getFirstCandidate(List<Researcher> candidates) {
-
+		return candidates.get(0);
 	}
 
 	private List<Researcher> reorderReviewerList(List<Researcher> reviewers) {
-
+		return reviewers; //implementar o sort
 	}
 
 	private void removeTopPaper() {
-
+		
 	}
 
 	private void addReviewerToTempList(Researcher researcher) {
@@ -82,11 +82,12 @@ public class Conference {
 	}
 
 	public List<Paper> getAcceptedPapers() {
+		return papersList;
 
 	}
 
 	public List<Paper> getRejectedPapers() {
-
+		return papersList;
 	}
 
 	public boolean areAllPapersReviewed() {

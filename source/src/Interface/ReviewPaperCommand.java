@@ -50,10 +50,7 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	}
 
 	public ReviewPaperCommand(Database database) {
-
 		this.database = database;
-		execute();
-
 	}
 
 	private void searchAllocatedPapers() { // mudança de nome do método // // showAllocatedPapers

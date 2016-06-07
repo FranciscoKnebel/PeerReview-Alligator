@@ -4,6 +4,7 @@ import Interface.ui.text.UIUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 import Interface.ui.TextManager;
 import domain.Database;
@@ -18,9 +19,7 @@ public class ChairHelperUI implements ChairHelperInterface {
 		this.addAction("A", new ConferenceAllocateCommand(database));
 		this.addAction("S", new ReviewPaperCommand(database));
 		this.addAction("D", new ConferenceReviewsResultCommand(database));
-		
-		createAndShowUI();
-	}
+	} 
 
 	public void createAndShowUI() {
 		UIUtils uiUtils = UIUtils.INSTANCE;
@@ -29,7 +28,7 @@ public class ChairHelperUI implements ChairHelperInterface {
 		do {
 			System.out.println();
 			System.out.print(getMenu(uiUtils.getTextManager()));
-			commandKey = uiUtils.readString(null);
+			commandKey = uiUtils.readString(null).toUpperCase();
 			AbstractChairHelperCommand command = actions.get(commandKey);
 			if(command != null) {
 				try {
@@ -37,6 +36,9 @@ public class ChairHelperUI implements ChairHelperInterface {
 				} catch (Exception e) {
 					uiUtils.handleUnexceptedError(e);
 				}
+			}
+			else {
+				System.out.print(invalidOption(uiUtils.getTextManager(), commandKey));				
 			}
 		} while(!EXIT_CODE.equals(commandKey));
 		
@@ -52,11 +54,19 @@ public class ChairHelperUI implements ChairHelperInterface {
 		}
 		sb.append(textManager.getText("message.choose.option")).append(": ");
 
+
 		return sb.toString();
 	}
 	
 	protected void addAction(String code, AbstractChairHelperCommand action) {
 		this.actions.put(code, action);
+	}
+	
+	protected String invalidOption(TextManager textManager, String commandKey) {
+		StringBuffer sb = new StringBuffer();
+		sb.append(textManager.getText("message.invalidOption", commandKey));
+		
+		return sb.toString();
 	}
 
 }
