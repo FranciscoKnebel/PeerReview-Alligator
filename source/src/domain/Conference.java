@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 
 public class Conference {
+	private int id;
 	private String acronym;
 	private List<Paper> papersList;
 	private List<Researcher> membersList;
@@ -32,7 +33,7 @@ public class Conference {
 	}
 
 	public void allocate(int numReviewers) {
-
+		
 	}
 
 	private void orderPapers() { //mudou de genareteOrderedePapersList
@@ -97,6 +98,10 @@ public class Conference {
 			}
 		}
 		return true;
+	}
+
+	public int getId() {
+		return this.id;
 	}
 
 }
