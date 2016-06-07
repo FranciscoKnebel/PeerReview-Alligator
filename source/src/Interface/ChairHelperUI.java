@@ -11,37 +11,40 @@ import domain.Database;
 
 public class ChairHelperUI implements ChairHelperInterface {
 	public static final String EXIT_CODE = "E";
+	protected UIUtils uiUtils = UIUtils.INSTANCE;
 
 	protected Map<String, AbstractChairHelperCommand> actions;
 
 	public ChairHelperUI(Database database) {
 		this.actions = new LinkedHashMap<>();
-		this.addAction("A", new ConferenceAllocateCommand(database));
-		this.addAction("S", new ReviewPaperCommand(database));
-		this.addAction("D", new ConferenceReviewsResultCommand(database));
+		this.addAction("A", new ReviewPaperCommand(uiUtils, database));
+		this.addAction("S", new ConferenceReviewsResultCommand(uiUtils, database));
+		this.addAction("D", new ConferenceAllocateCommand(uiUtils, database));
 	} 
 
 	public void createAndShowUI() {
-		UIUtils uiUtils = UIUtils.INSTANCE;
 		String commandKey = null;
+		TextManager textManager = uiUtils.getTextManager();
 		
 		do {
 			System.out.println();
-			System.out.print(getMenu(uiUtils.getTextManager()));
+			System.out.print(getMenu(textManager));
+			System.out.println();
 			commandKey = uiUtils.readString(null).toUpperCase();
 			AbstractChairHelperCommand command = actions.get(commandKey);
 			if(command != null) {
 				try {
-					command.execute();					
+					command.execute();			
 				} catch (Exception e) {
 					uiUtils.handleUnexceptedError(e);
 				}
 			}
-			else {
-				System.out.print(invalidOption(uiUtils.getTextManager(), commandKey));				
+			else if (!EXIT_CODE.equals(commandKey)){
+				System.out.print(invalidOption(textManager, commandKey));				
 			}
 		} while(!EXIT_CODE.equals(commandKey));
 		
+		System.out.print(textManager.getText("message.exit"));
 	}
 
 	protected String getMenu(TextManager textManager) {

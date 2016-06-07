@@ -13,14 +13,12 @@ public class Paper {
 	private List<Review> reviewsList;
 
 	public Paper(int id, String title, Researcher author, String conference, String researchTopic) { // mudanca
-
 		this.id = id;
 		this.title = title;
 		this.author = author;
 		this.conference = conference;
 		this.researchTopic = researchTopic;
 		this.reviewsList = new ArrayList<Review>();
-
 	}
 	
 	public List<Review> getReviewsList() {
@@ -39,29 +37,36 @@ public class Paper {
 		return this.title;
 	}
 	
-	
-	public List<Researcher> getReviewers() { // mudança
+	public List<Researcher> getReviewers() {
 		List<Researcher> reviewersList = new ArrayList<Researcher>();
 
 		for (Review review : reviewsList) {
 			reviewersList.add(review.getReviewer());
 		}
+		
 		return reviewersList;
 	}
 
 	public float getMeanGrade() {
 		float meanGrade = 0;
 
-		for (Review review : reviewsList) {
+		for (Review review : reviewsList)
 			meanGrade += review.getGrade();
-		}
 
-		meanGrade = meanGrade / reviewsList.size();
+		meanGrade /= reviewsList.size();
+		
 		return meanGrade;
 	}
 
 	public void addReviewer(Researcher reviewer) {
 		Review newReview = new Review(reviewer);
+		
+		reviewsList.add(newReview);
+	}
+	
+	public void addReviewer(Researcher reviewer, int grade) {
+		Review newReview = new Review(reviewer, grade);
+		
 		reviewsList.add(newReview);
 	}
 
@@ -83,33 +88,28 @@ public class Paper {
 	}
 
 	public boolean isAllocated() {
-		if (conference != null) {
+		if (conference != null) 
 			return true;
-		} else {
-			return false;
-		}
+		return false;
 	}
 	
 	public void setReviewGrade(Researcher reviewer, float grade) { //
 		for (Review review : reviewsList) {
-			if (review.getReviewer() == reviewer) {
+			if (review.getReviewer().equals(reviewer)) {
 				review.setGrade(grade);
 			}
-			else {}
+			else {
+				
+			}
 			
 		}
-
 	}
 	
 	public void addReviewToList(Researcher reviewer, float grade) {
 		 reviewsList.add(new Review(reviewer, grade));
 	}
 
-
-
-	public List<Review> getNotConcludedReviewsList() { // mudanca --->>era o
-														// showReviewers
-
+	public List<Review> getNotConcludedReviewsList() { // mudanca --->>era o showReviewers
 		List<Review> notConcludedReviewsList = new ArrayList<Review>();
 
 		for (Review review : reviewsList) {
@@ -121,10 +121,4 @@ public class Paper {
 		return notConcludedReviewsList;
 	}
 	
-	public void showReviewers() {  //voltou pra ca
-		for (int i = 0; i < reviewsList.size(); i++) {
-			System.out.println( reviewsList.get(i).getReviewer().getName() + "\n");
-		}
-	}
-
 }

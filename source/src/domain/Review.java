@@ -9,17 +9,20 @@ public class Review {
 	public Review(Researcher reviewer, float grade) {
 		if(this.reviewer == null) {
 			this.reviewer = reviewer;
+			reviewer.incrementNumberOfReviews();
 		}
-		reviewer.incrementNumberOfReviews();
-		reviewer.decrementNumberOfReviews();
+		
+		setGrade(grade);
+		setReviewStatus(true);
 	}
 
 	public Review(Researcher reviewer) {
 		if(this.reviewer == null) {
 			this.reviewer = reviewer;
+			reviewer.incrementNumberOfReviews();
 		}
-		reviewer.incrementNumberOfReviews();
-		reviewer.decrementNumberOfReviews();
+		
+		setReviewStatus(false);
 	}
 	
 	public float getGrade() {

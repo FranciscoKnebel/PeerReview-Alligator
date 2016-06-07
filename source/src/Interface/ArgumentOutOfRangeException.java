@@ -1,5 +1,5 @@
 package Interface;
 
-public class ArgumentOutOfRangeException {
+public class ArgumentOutOfRangeException extends Exception{
 
 }

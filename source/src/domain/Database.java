@@ -165,8 +165,18 @@ public class Database {
 		conferenceMembers3.add(getResearcher(10));
 		initConference("SBES", conferenceMembers3, getPapersInConference("SBES"));
 		
-		//add review to paper
-				
+		initReviewPaper(1, 8, 2);
+		initReviewPaper(1, 10);
+		initReviewPaper(2, 7, 2);
+		initReviewPaper(2, 2, 3);
+		initReviewPaper(3, 4, -1);
+		initReviewPaper(3, 6, 1);
+		initReviewPaper(4, 1, 1);
+		initReviewPaper(4, 3, 0);
+		initReviewPaper(5, 4, -3);
+		initReviewPaper(5, 5, -3);
+		initReviewPaper(6, 3, -1);
+		initReviewPaper(6, 6, 0);
 	}
 
 	private void initResearcher(int id, String name, String affiliation, List<String> researchTopics) {
@@ -184,7 +194,19 @@ public class Database {
 		save(paper);
 	}
 
-	//private void initReviewPaper() add review to paper
+	private void initReviewPaper(int paperID, int reviewerID, int grade) {
+		Paper selectedPaper = getPaper(paperID);
+		Researcher selectedReviewer = getResearcher(reviewerID);
+		
+		selectedPaper.addReviewer(selectedReviewer, grade);		
+	}
+	
+	private void initReviewPaper(int paperID, int reviewerID) {
+		Paper selectedPaper = getPaper(paperID);
+		Researcher selectedReviewer = getResearcher(reviewerID);
+		
+		selectedPaper.addReviewer(selectedReviewer);
+	}
 	
 	private List<Paper> getPapersInConference(String acronym) {
 		List<Paper> paperList = new ArrayList<>();

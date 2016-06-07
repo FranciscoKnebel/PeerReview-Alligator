@@ -1,111 +1,101 @@
 package Interface;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.Scanner;
 
+import Interface.ui.text.UIUtils;
 import domain.Database;
 import domain.Paper;
 import domain.Researcher;
-import domain.Review;
 
 public class ReviewPaperCommand extends AbstractChairHelperCommand {
 
 	private Collection<Paper> paperList; // mudança
+	private Collection<Researcher> researcherList; //
 	private Database database;
-	private String selectedPaperName; // mudança
 	
-	private String selectedPaperTitle;
 	private Paper selectedPaper;
-
-	private String selectedReviewerName; // mudança
 	private Researcher selectedReviewer;
-
-	private Float selectedGrade;
+	private int selectedGrade;
 	
-	private Scanner scanner;
+	private UIUtils uiUtils;
 
-	public void execute() {
-		paperList = database.getAllPapers();
-
-		searchAllocatedPapers();
-		askPaper();
-
-		selectedPaper = searchPaper();
-		selectedPaper.showReviewers();
-
-		askReviewer();
-		selectedReviewer = searchReviewer();
-		askGrade();
-		setReviewGrade(selectedReviewer, selectedGrade);
-	}
-
-	void setReviewGrade(Researcher reviewer, Float grade) {
-		for (int i = 0; i < selectedPaper.getReviewsList().size(); i++) { // mudança
-			if (selectedPaper.getReviewsList().get(i).getReviewer().getName().equals(reviewer)) {
-				selectedPaper.getReviewsList().get(i).setGrade(selectedGrade);
-				selectedPaper.getReviewsList().get(i).setReviewStatus(true);
-			}
-		}
-	}
-
-	public ReviewPaperCommand(Database database) {
+	public ReviewPaperCommand(UIUtils uiUtils, Database database) {
 		this.database = database;
-	}
-
-	private void searchAllocatedPapers() { // mudança de nome do método // // showAllocatedPapers
-		int i = 0;									
-		for (Paper paper : paperList) { // mudança
-			if(paper.isAllocated()) {
-				System.out.println( i ); // falar com INGRID TUPAC
-				System.out.println(paper.getTitle());
-				i++;
-			}
-		}
+		this.uiUtils = uiUtils;
 	}
 	
-	private Paper searchPaper() {
-		for (Paper paper : paperList) { // mudança
-			if (paper.getTitle() == selectedPaperName) {
-				return paper;
-			}
-		}
-		return null;
+	public void execute() {
+		this.paperList = database.getAllPapers();
+		this.researcherList = database.getAllResearchers();
+
+		showAllocatedPapers();
+		askPaper();
+		askReviewer();
+		askGrade();
+		setReviewGrade();
 	}
 
-	private Researcher searchReviewer() {
-		for (int i = 0; i < selectedPaper.getReviewsList().size(); i++) { // mudança
-			if (selectedPaper.getReviewsList().get(i).getReviewer().getName() == selectedReviewerName) {
-				return selectedPaper.getReviewsList().get(i).getReviewer();
-			}
-		}
-		return null;
+	private void setReviewGrade() {
+		selectedPaper.addReviewer(selectedReviewer, selectedGrade);
+	}
+
+	private void showAllocatedPapers() {
+		Collection<Paper> allocatedPapers = getAllocatedPapers();
+		
+		for(Paper paper : allocatedPapers)
+			System.out.println( paper.getId() + ": " + paper.getTitle());
 	}
 
 	private void askPaper() {
-		System.out.println("paper:");
-		scanner = new Scanner(System.in);
-		selectedPaperName = scanner.next(); // ask paper
-		scanner.close();
-	}
-
-	private void askGrade() {
-		selectedGrade = (float) -4; //magic number
-		scanner = new Scanner(System.in);
-		while (selectedGrade < -3 || selectedGrade > 3) {
-			System.out.println("grade (-3 to 3):"); // implementar teste
-			selectedGrade = scanner.nextFloat();
-			if (selectedGrade < -3 || selectedGrade > 3) {
-				System.out.println("please, insert a valid grade\n"); 
+		int paperID = uiUtils.readInteger("message.paper");
+		
+		try {
+			for(Paper paper: paperList) {
+				if(paper.getId() == paperID) {
+					this.selectedPaper = paper;
+				}			
 			}
-		}
-		scanner.close();
+			
+			if(this.selectedPaper == null)
+				throw new PaperNotFoundException(uiUtils.getTextManager().getText("exception.paperNotFound"));
+		} catch (PaperNotFoundException e) {
+			System.out.println(e.getMessage());
+			askPaper();
+		}						
 	}
 
 	private void askReviewer() {
-		System.out.println("reviewer: ");
-		scanner = new Scanner(System.in);
-		selectedReviewerName = scanner.next(); // ask reviewer
-		scanner.close();
+		int reviewerID = uiUtils.readInteger("message.reviewer");
+		
+		try {
+			for(Researcher reviewer : researcherList) {
+				if(reviewer.getId() == reviewerID)
+					this.selectedReviewer = reviewer;
+			}
+			
+			if(this.selectedReviewer == null)
+				throw new ReviewerNotFoundException(uiUtils.getTextManager().getText("exception.reviewerNotFound"));
+		} catch (ReviewerNotFoundException e) {
+			System.out.println(e.getMessage());
+			askReviewer();
+		}
 	}
+	
+	
+	private void askGrade() {
+		this.selectedGrade = uiUtils.readInteger("message.grade", -3, 3);
+	}
+	
+	private Collection<Paper> getAllocatedPapers() {
+		Collection<Paper> allocatedPapers = new ArrayList<Paper>();
+		
+		for(Paper paper : paperList) {
+			if(paper.isAllocated())
+				allocatedPapers.add(paper);
+		}
+		
+		return allocatedPapers;
+	}
+	
 }
