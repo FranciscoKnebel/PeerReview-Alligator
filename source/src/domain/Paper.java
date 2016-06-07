@@ -97,11 +97,8 @@ public class Paper {
 		for (Review review : reviewsList) {
 			if (review.getReviewer().equals(reviewer)) {
 				review.setGrade(grade);
+				review.setReviewStatus(true);
 			}
-			else {
-				
-			}
-			
 		}
 	}
 	
