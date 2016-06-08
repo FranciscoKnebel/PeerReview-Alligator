@@ -3,7 +3,10 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 public class Conference {
 	private int id;
@@ -11,31 +14,96 @@ public class Conference {
 	private List<Paper> papersList;
 	private List<Researcher> membersList;
 	private boolean areMembersAllocated;
+	private List<Researcher> tempList;
 
 	public Conference(String acronym, List<Researcher> members, List<Paper> papers) {
 		this.acronym = acronym;
 		this.papersList = papers;
 		this.membersList = members;
-		this.areMembersAllocated = areMembersAllocated();
 	}
 
 	public String getAcronym() {
 		return this.acronym;
 	}
-
-	private boolean areMembersAllocated() {
+	
+	private boolean areMembersAllocated(int numReviewers) {
 		for (Paper paper : papersList) {
-			for (Researcher researcher : membersList) {
-
+			if(paper.getReviewers().size() != numReviewers){
+				return false;
 			}
 		}
 		return true;
 	}
 
 	public void allocate(int numReviewers) {
+		if (numReviewers < 2 || numReviewers > 5){ 
+			// throw exception
+		}
+		
+		if (numReviewers > membersList.size()) {
+			// throw errooooooou
+		}
+		
+		orderPapers();
+		orderMembers();
+
+		
+		for (int i = 0; i < numReviewers; i++) {
+			List<Paper> tmpPaperList = papersList;
+			Collections.sort(tmpPaperList, orderPapersById);
+			
+			Paper firstPaper = tmpPaperList.get(0);
+			List<Researcher> tmpResearcherList = membersList;
+			
+			int tmpPaperListSize = tmpPaperList.size();
+			
+			for (int j = 0; j < tmpPaperListSize; j++) {
+				Collections.sort(tmpResearcherList, orderResearchersById);
+				
+				for (Researcher researcher : tmpResearcherList) {
+					if (!researcher.validateForPaper(firstPaper)) {
+						tmpResearcherList.remove(researcher);
+					}				
+				}
+				orderResearchersByAllocatedPapersForConference(tmpResearcherList, this);
+				Researcher firstCandidate = tmpResearcherList.get(0);
+				tempList.add(firstCandidate);
+				firstCandidate.incrementNumberOfAllocatedPapersForConference(this);
+				tmpPaperList.remove(firstPaper);	
+			}
+		}
+		areMembersAllocated = areMembersAllocated(numReviewers);
 		
 	}
-
+	
+	private Comparator<Paper> orderPapersById = new Comparator<Paper>() {
+        @Override
+        public int compare(Paper p1, Paper p2) {
+            return p1.getId() - p2.getId();
+        }
+    };
+	
+	private Comparator<Researcher> orderResearchersById = new Comparator<Researcher>() {
+        @Override
+        public int compare(Researcher r1, Researcher r2) {
+            return r1.getId() - r2.getId();
+        }
+    };
+    
+    
+    private List<Researcher> orderResearchersByAllocatedPapersForConference(List<Researcher> researchers, Conference conference) {
+    	Collections.sort(researchers, new Comparator<Researcher>() {
+    		@Override
+    		public int compare(Researcher r1, Researcher r2) {
+    			Integer diff = r1.getNumberOfAllocatedPapersForConference(conference) - r2.getNumberOfAllocatedPapersForConference(conference);
+    			return (diff == 0) ? r1.getId() - r2.getId() : diff;
+    		}
+    	});
+    	return researchers;
+    };
+    
+    
+	
 	private void orderPapers() { //mudou de genareteOrderedePapersList
 		Collections.sort(papersList, new Comparator<Paper>() {
 	        @Override
@@ -44,6 +112,7 @@ public class Conference {
 	        }
 	    });
 	}
+
 
 	private void orderMembers() {
 		Collections.sort(membersList, new Comparator<Researcher>() {
@@ -63,31 +132,31 @@ public class Conference {
 	}
 
 	private List<Researcher> reorderReviewerList(List<Researcher> reviewers) {
-		return reviewers; //implementar o sort
+		return reviewers; //eliminado
 	}
 
-	private void removeTopPaper() {
+	private void removeTopPaper() { //eliminado,
 		
 	}
 
-	private void addReviewerToTempList(Researcher researcher) {
+	private void addReviewerToTempList(Researcher researcher) { //nao usa mais
 
 	}
 
-	private void saveReviewers(List<Researcher> tempList) {
+	private void saveReviewers(List<Researcher> tempList) { //nao usa
 
 	}
 
-	private void showAllocationLog() {
+	private void showAllocationLog() { //implementar
 
 	}
 
-	public List<Paper> getAcceptedPapers() {
+	public List<Paper> getAcceptedPapers() { //implementar
 		return papersList;
 
 	}
 
-	public List<Paper> getRejectedPapers() {
+	public List<Paper> getRejectedPapers() {//implementar
 		return papersList;
 	}
 
