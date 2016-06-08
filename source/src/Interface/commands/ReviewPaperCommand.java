@@ -1,8 +1,11 @@
-package Interface;
+package Interface.commands;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
+import Interface.ChairHelperInterface;
+import Interface.exceptions.PaperNotFoundException;
+import Interface.exceptions.ReviewerNotFoundException;
 import Interface.ui.text.UIUtils;
 import domain.Database;
 import domain.Paper;

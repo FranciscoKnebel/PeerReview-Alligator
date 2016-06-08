@@ -5,6 +5,9 @@ import Interface.ui.text.UIUtils;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import Interface.commands.ConferenceAllocateCommand;
+import Interface.commands.ConferenceReviewsResultCommand;
+import Interface.commands.ReviewPaperCommand;
 import Interface.ui.TextManager;
 import domain.Database;
 

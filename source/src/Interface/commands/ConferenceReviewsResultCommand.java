@@ -1,8 +1,10 @@
-package Interface;
+package Interface.commands;
 
 import java.util.Collection;
 import java.util.List;
 
+import Interface.ChairHelperInterface;
+import Interface.exceptions.ConferenceNotFoundException;
 import Interface.ui.TextManager;
 import Interface.ui.text.UIUtils;
 import domain.Conference;

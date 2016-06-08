@@ -1,4 +1,4 @@
-package Interface;
+package Interface.exceptions;
 
 public class ConferenceNotFoundException extends Exception {
 
