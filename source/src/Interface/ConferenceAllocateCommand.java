@@ -29,17 +29,15 @@ public class ConferenceAllocateCommand implements ChairHelperInterface {
 	}
 	
 	private void askConference(){
-		System.out.println(": ");
+		System.out.println("Qual o id da conferencia?: ");
 		scanner = new Scanner(System.in);
 		selectedConferenceId = scanner.nextInt(); // ask reviewer
-		scanner.close();
 	}
 	
 	private void askNumReviewers(){
-		System.out.println(": ");
+		System.out.println("Quantos revisores?: ");
 		scanner = new Scanner(System.in);
 		numReviewers = scanner.nextInt(); // ask reviewer
-		scanner.close();
 	}
 	
 	public void execute() {
