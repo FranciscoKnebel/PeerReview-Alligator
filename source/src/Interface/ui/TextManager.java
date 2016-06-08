@@ -5,9 +5,6 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class TextManager {
 	public static final Locale LANGUAGE[] = { new Locale("en", "US"), new Locale("pt", "BR") };
 	public static final int LANGUAGE_US = 0;
@@ -18,7 +15,6 @@ public class TextManager {
 	private ResourceBundle customBundle;
 	private String customName;
 	private Locale locale;
-	private Log log;
 
 	public TextManager(String baseName) {
 		this(baseName, Locale.getDefault());
@@ -29,7 +25,6 @@ public class TextManager {
 	}
 
 	public TextManager(String baseName, Locale locale) {
-		this.log = LogFactory.getLog(this.getClass());
 		this.locale = locale;
 		setBaseName(baseName);
 		setCustomName(null);
@@ -122,7 +117,6 @@ public class TextManager {
 			try {
 				text = bundle.getString(key);
 			} catch (MissingResourceException exc) {
-				log.warn(exc);
 				text = key;
 			}
 		}

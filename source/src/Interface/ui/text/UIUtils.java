@@ -6,9 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import Interface.ui.TextManager;
 
 public class UIUtils {
@@ -18,14 +15,12 @@ public class UIUtils {
 	public static final UIUtils INSTANCE = new UIUtils();
 	public static final String PROPERTY_RESOURCE_BUNDLE = "Interface.ui.resources.globalMessages";
 
-	private final Log log;
 	private final BufferedReader reader;
 	private final SimpleDateFormat sdf;
 	private final SimpleDateFormat sdtf;
 	private final TextManager textManager;
 	
 	private UIUtils() {
-		this.log = LogFactory.getLog(getClass());
 		this.reader = new BufferedReader(new InputStreamReader(System.in));
 		this.textManager = new TextManager(PROPERTY_RESOURCE_BUNDLE);
 		this.sdf = new SimpleDateFormat(DATE_FORMAT);
@@ -45,7 +40,6 @@ public class UIUtils {
 
 	public void handleUnexceptedError(Exception e) {
 		System.out.println(textManager.getText("exception.unexpected"));
-		log.error(e);
 		e.printStackTrace();
 		System.exit(-1);
 	}
@@ -90,7 +84,6 @@ public class UIUtils {
 			} catch (ParseException pe) {
 				System.out.println(textManager.getText("exception.date.format",
 						DATE_FORMAT, false));
-				log.warn(pe);
 			} catch (Exception e) {
 				handleUnexceptedError(e);
 			}
@@ -107,7 +100,6 @@ public class UIUtils {
 			} catch (NumberFormatException nfe) {
 				System.out.println(textManager
 						.getText("exception.double.format"));
-				log.warn(nfe);
 			} catch (Exception e) {
 				handleUnexceptedError(e);
 			}
@@ -125,7 +117,6 @@ public class UIUtils {
 			} catch (NumberFormatException nfe) {
 				System.out.println(textManager
 						.getText("exception.integer.format"));
-				log.warn(nfe);
 			} catch (Exception e) {
 				handleUnexceptedError(e);
 			}
@@ -156,7 +147,6 @@ public class UIUtils {
 			} catch (NumberFormatException nfe) {
 				System.out
 						.println(textManager.getText("exception.long.format"));
-				log.warn(nfe);
 			} catch (Exception e) {
 				handleUnexceptedError(e);
 			}

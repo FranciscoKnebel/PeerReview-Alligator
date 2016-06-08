@@ -4,7 +4,6 @@ import Interface.ui.text.UIUtils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Scanner;
 
 import Interface.ui.TextManager;
 import domain.Database;
@@ -13,7 +12,7 @@ public class ChairHelperUI implements ChairHelperInterface {
 	public static final String EXIT_CODE = "E";
 	protected UIUtils uiUtils = UIUtils.INSTANCE;
 
-	protected Map<String, AbstractChairHelperCommand> actions;
+	protected Map<String, ChairHelperInterface> actions;
 
 	public ChairHelperUI(Database database) {
 		this.actions = new LinkedHashMap<>();
@@ -29,9 +28,8 @@ public class ChairHelperUI implements ChairHelperInterface {
 		do {
 			System.out.println();
 			System.out.print(getMenu(textManager));
-			System.out.println();
 			commandKey = uiUtils.readString(null).toUpperCase();
-			AbstractChairHelperCommand command = actions.get(commandKey);
+			ChairHelperInterface command = actions.get(commandKey);
 			if(command != null) {
 				try {
 					command.execute();			
@@ -46,22 +44,27 @@ public class ChairHelperUI implements ChairHelperInterface {
 		
 		System.out.print(textManager.getText("message.exit"));
 	}
+	
+	@Override
+	public void execute() {
+		createAndShowUI();
+	}
 
 	protected String getMenu(TextManager textManager) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(textManager.getText("message.options", EXIT_CODE, false)).append(":\n");
 		for (String key : actions.keySet()) {
-			AbstractChairHelperCommand action = actions.get(key);
+			ChairHelperInterface action = actions.get(key);
 			sb.append(key).append(" - ").append(textManager.getText(action.getClass()
 					.getSimpleName())).append("\n");
 		}
-		sb.append(textManager.getText("message.choose.option")).append(": ");
+		sb.append(textManager.getText("message.option.choose")).append(": ");
 
 
 		return sb.toString();
 	}
 	
-	protected void addAction(String code, AbstractChairHelperCommand action) {
+	protected void addAction(String code, ChairHelperInterface action) {
 		this.actions.put(code, action);
 	}
 	

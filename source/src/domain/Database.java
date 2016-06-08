@@ -135,6 +135,7 @@ public class Database {
 
 	
 		//Conferences
+		id = 1;
 		List<Researcher> conferenceMembers1 = new ArrayList<>();
 		conferenceMembers1.add(getResearcher(1));
 		conferenceMembers1.add(getResearcher(2));
@@ -143,7 +144,7 @@ public class Database {
 		conferenceMembers1.add(getResearcher(5));
 		conferenceMembers1.add(getResearcher(6));
 		conferenceMembers1.add(getResearcher(7));
-		initConference("ICSE", conferenceMembers1, getPapersInConference("ICSE"));
+		initConference(id++, "ICSE", conferenceMembers1, getPapersInConference("ICSE"));
 		
 		List<Researcher> conferenceMembers2 = new ArrayList<>();
 		conferenceMembers2.add(getResearcher(1));
@@ -153,7 +154,7 @@ public class Database {
 		conferenceMembers2.add(getResearcher(5));
 		conferenceMembers2.add(getResearcher(6));
 		conferenceMembers2.add(getResearcher(7));
-		initConference("FSE", conferenceMembers2, getPapersInConference("FSE"));
+		initConference(id++, "FSE", conferenceMembers2, getPapersInConference("FSE"));
 
 		List<Researcher> conferenceMembers3 = new ArrayList<>();
 		conferenceMembers3.add(getResearcher(4));
@@ -163,7 +164,7 @@ public class Database {
 		conferenceMembers3.add(getResearcher(8));
 		conferenceMembers3.add(getResearcher(9));
 		conferenceMembers3.add(getResearcher(10));
-		initConference("SBES", conferenceMembers3, getPapersInConference("SBES"));
+		initConference(id++, "SBES", conferenceMembers3, getPapersInConference("SBES"));
 		
 		initReviewPaper(1, 8, 2);
 		initReviewPaper(1, 10);
@@ -184,8 +185,8 @@ public class Database {
 		save(researcher);
 	}
 
-	private void initConference(String acronym, List<Researcher> members, List<Paper> papers) {
-		Conference conference = new Conference(acronym, members, papers);
+	private void initConference(int id, String acronym, List<Researcher> members, List<Paper> papers) {
+		Conference conference = new Conference(id, acronym, members, papers);
 		save(conference);
 	}
 

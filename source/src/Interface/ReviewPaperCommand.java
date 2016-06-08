@@ -8,7 +8,7 @@ import domain.Database;
 import domain.Paper;
 import domain.Researcher;
 
-public class ReviewPaperCommand extends AbstractChairHelperCommand {
+public class ReviewPaperCommand implements ChairHelperInterface {
 
 	private Collection<Paper> paperList; // mudança
 	private Collection<Researcher> researcherList; //
@@ -28,7 +28,7 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 	public void execute() {
 		this.paperList = database.getAllPapers();
 		this.researcherList = database.getAllResearchers();
-
+		
 		showAllocatedPapers();
 		askPaper();
 		askReviewer();
@@ -49,11 +49,13 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 
 	private void askPaper() {
 		int paperID = uiUtils.readInteger("message.paper");
+		this.selectedPaper = null;
 		
 		try {
 			for(Paper paper: paperList) {
 				if(paper.getId() == paperID) {
 					this.selectedPaper = paper;
+					break;
 				}			
 			}
 			
@@ -67,11 +69,14 @@ public class ReviewPaperCommand extends AbstractChairHelperCommand {
 
 	private void askReviewer() {
 		int reviewerID = uiUtils.readInteger("message.reviewer");
+		this.selectedReviewer = null;
 		
 		try {
 			for(Researcher reviewer : researcherList) {
-				if(reviewer.getId() == reviewerID)
+				if(reviewer.getId() == reviewerID) {
 					this.selectedReviewer = reviewer;
+					break;
+				}				
 			}
 			
 			if(this.selectedReviewer == null)

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 
-public class ConferenceAllocateCommand extends AbstractChairHelperCommand {
+public class ConferenceAllocateCommand implements ChairHelperInterface {
 	
 	private Database database;
 	private UIUtils uiUtils;
@@ -50,7 +50,6 @@ public class ConferenceAllocateCommand extends AbstractChairHelperCommand {
 		selectedConference.allocate(numReviewers);
 		
 		
-
 	}
 	
 	private Conference searchConference( int conferenceId ) {

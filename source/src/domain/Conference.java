@@ -16,7 +16,8 @@ public class Conference {
 	private boolean areMembersAllocated;
 	private List<Researcher> tempList;
 
-	public Conference(String acronym, List<Researcher> members, List<Paper> papers) {
+	public Conference(int id, String acronym, List<Researcher> members, List<Paper> papers) { //add id
+		this.id	= id;
 		this.acronym = acronym;
 		this.papersList = papers;
 		this.membersList = members;
@@ -76,6 +77,34 @@ public class Conference {
 		
 	}
 	
+	public List<Paper> getAcceptedPapers() {
+		 /* 	a. Artigos cuja media de notas e >= 0, aparecem na lista de artigos aceitos,
+		 *  	em ordem decrescente
+		 */
+
+		return papersList;
+	}
+
+	public List<Paper> getRejectedPapers() {
+		 /*  	b. Artigos cuja media de notas e < 0, aparecem na lista
+		 * 		de artigos rejeitados, em ordem crescente
+		 */
+		return papersList;
+	}
+
+	public boolean areAllPapersReviewed() {
+		for (Paper paper : papersList) {
+			if (paper.getNotConcludedReviewsList() != null) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+	
 	private Comparator<Paper> orderPapersById = new Comparator<Paper>() {
         @Override
         public int compare(Paper p1, Paper p2) {
@@ -101,9 +130,7 @@ public class Conference {
     	});
     	return researchers;
     };
-    
-    
-	
+
 	private void orderPapers() { //mudou de genareteOrderedePapersList
 		Collections.sort(papersList, new Comparator<Paper>() {
 	        @Override
@@ -149,28 +176,6 @@ public class Conference {
 
 	private void showAllocationLog() { //implementar
 
-	}
-
-	public List<Paper> getAcceptedPapers() { //implementar
-		return papersList;
-
-	}
-
-	public List<Paper> getRejectedPapers() {//implementar
-		return papersList;
-	}
-
-	public boolean areAllPapersReviewed() {
-		for (Paper paper : papersList) {
-			if (paper.getNotConcludedReviewsList() != null) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public int getId() {
-		return this.id;
 	}
 
 }
