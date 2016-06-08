@@ -67,7 +67,7 @@ public class Conference {
 					}				
 				}
 				orderResearchersByAllocatedPapersForConference(tmpResearcherList, this);
-				Researcher firstCandidate = tmpResearcherList.get(0);
+				Researcher firstCandidate = getFirstCandidate(tmpResearcherList);
 				tempList.add(firstCandidate);
 				firstCandidate.incrementNumberOfAllocatedPapersForConference(this);
 				tmpPaperList.remove(firstPaper);	
@@ -81,15 +81,28 @@ public class Conference {
 		 /* 	a. Artigos cuja media de notas e >= 0, aparecem na lista de artigos aceitos,
 		 *  	em ordem decrescente
 		 */
-
-		return papersList;
+		List<Paper> acceptedPapersList = new ArrayList<Paper>();
+		for( Paper paper : papersList ) {
+			if( paper.getMeanGrade() >= 0 ) {
+				acceptedPapersList.add(paper);
+			}
+		}
+		orderPapersByMeanGrade(acceptedPapersList);	
+		return acceptedPapersList;
 	}
 
 	public List<Paper> getRejectedPapers() {
 		 /*  	b. Artigos cuja media de notas e < 0, aparecem na lista
 		 * 		de artigos rejeitados, em ordem crescente
 		 */
-		return papersList;
+		List<Paper> rejectedPapersList = new ArrayList<Paper>();
+		for( Paper paper : papersList ) {
+			if( paper.getMeanGrade() < 0 ) {
+				rejectedPapersList.add(paper);
+			}
+		}
+		orderPapersByMeanGrade(rejectedPapersList);	
+		return rejectedPapersList;
 	}
 
 	public boolean areAllPapersReviewed() {
@@ -139,6 +152,15 @@ public class Conference {
 	        }
 	    });
 	}
+	
+	private void orderPapersByMeanGrade( List<Paper> aPaperList ) { //ordem decrescente
+		Collections.sort(aPaperList, new Comparator<Paper>() {
+	        @Override
+	        public int compare(Paper p1, Paper p2) {
+	            return p1.getId() + p2.getId();
+	        }
+	    });
+	}
 
 
 	private void orderMembers() {
@@ -158,21 +180,21 @@ public class Conference {
 		return candidates.get(0);
 	}
 
-	private List<Researcher> reorderReviewerList(List<Researcher> reviewers) {
-		return reviewers; //eliminado
-	}
+//	private List<Researcher> reorderReviewerList(List<Researcher> reviewers) {
+//		return reviewers; //eliminado
+//	}
 
-	private void removeTopPaper() { //eliminado,
-		
-	}
-
-	private void addReviewerToTempList(Researcher researcher) { //nao usa mais
-
-	}
-
-	private void saveReviewers(List<Researcher> tempList) { //nao usa
-
-	}
+//	private void removeTopPaper() { //eliminado,
+//		
+//	}
+//
+//	private void addReviewerToTempList(Researcher researcher) { //nao usa mais
+//
+//	}
+//
+//	private void saveReviewers(List<Researcher> tempList) { //nao usa
+//
+//	}
 
 	private void showAllocationLog() { //implementar
 
