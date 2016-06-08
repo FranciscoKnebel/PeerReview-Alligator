@@ -27,6 +27,10 @@ public class Conference {
 		return this.acronym;
 	}
 	
+	public List<Paper> getPapersList() {
+		return this.papersList;
+	}
+	
 	private boolean areMembersAllocated(int numReviewers) {
 		for (Paper paper : papersList) {
 			if(paper.getReviewers().size() != numReviewers){
@@ -196,8 +200,8 @@ public class Conference {
 //
 //	}
 
-	private void showAllocationLog() { //implementar
-
-	}
+//	private void showAllocationLog() { //implementar
+//
+//	}
 
 }

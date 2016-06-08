@@ -132,7 +132,7 @@ public class Database {
 		initPaper(id++, "Product Derivation", 		getResearcher(8), 	"ICSE", "Software Product Lines");
 		initPaper(id++, "Architecture Comformance", getResearcher(9), 	"ICSE", "Software Architecture");
 		initPaper(id++, "Structural Testing", 		getResearcher(10), 	"ICSE", "Software Testing");
-
+		
 	
 		//Conferences
 		id = 1;
@@ -210,17 +210,20 @@ public class Database {
 	}
 	
 	private List<Paper> getPapersInConference(String acronym) {
-		List<Paper> paperList = new ArrayList<>();
+		List<Paper> papersInConference = new ArrayList<>();
 		
-		for(int i = 0; i < paperList.size(); i++) {
-			Paper paper = paperList.get(i);
-			
+		for(int i = 0; i < this.paperList.size(); i++) {
+			Paper paper = this.paperList.get(i);	
 			if(paper.getConference() == acronym) {
-				paperList.add(paper);
+				papersInConference.add(paper);
 			}
 		}
-		
-		return paperList;
+		if(papersInConference.size() == 0 ) {
+			return null;
+		}
+		else {
+			return papersInConference;
+		}
 	}
 	
 }
