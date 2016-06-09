@@ -30,11 +30,11 @@ public class Researcher {
 	
 	public void incrementNumberOfAllocatedPapersForConference(Conference conference) {
 		Integer number = this.numberOfAllocatedPapersByConference.get(conference);
-		this.numberOfAllocatedPapersByConference.put(conference, ((number == null) ? 1 : number++));
+		this.numberOfAllocatedPapersByConference.put(conference, ((number == null) ? 1 : number+1));
 	}
 	public void decrementNumberOfAllocatedPapers(Conference conference) {
 		Integer number = this.numberOfAllocatedPapersByConference.get(conference);
-		this.numberOfAllocatedPapersByConference.put(conference, ((number == null) || (number == 0) ? 0 : number--));
+		this.numberOfAllocatedPapersByConference.put(conference, ((number == null) || (number == 0) ? 0 : number-1));
 	}
 	
 	public void incrementNumberOfReviews() {
@@ -62,7 +62,19 @@ public class Researcher {
 		return researchTopics;
 	}
 
-	private boolean checkAffiliation(String authorAffiliation) { // mudan�a
+	public boolean checkCandidate(Paper paper) {
+		return (!checkAffiliation(paper.getAuthor().affiliation) // nao ï¿½ da msm
+																	// universidade
+				&& compareResearchTopics(paper.getResearchTopic()) // possui o
+																	// topico de
+																	// pesquisa
+				&& !checkAllocated(paper.getReviewers())); // ainda nao foi
+															// alocado para
+															// revisar esse
+															// artigo
+	}
+
+	private boolean checkAffiliation(String authorAffiliation) { // mudanï¿½a
 		if (this.affiliation.equals(authorAffiliation)) {
 			return true; // autor e revisor sao da mesma universidade
 		} else {

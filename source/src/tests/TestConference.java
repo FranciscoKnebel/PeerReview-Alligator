@@ -49,13 +49,13 @@
 			paper1 = new Paper(0, "TuPacMan vs Lady Pacman", author, "ABC", "engenharia explosiva");
 			paper2 = new Paper(1, "papel quadrado", author, "ABC", "engenharia artistica");
 			paper3 = new Paper(2, "Estudo Trivial sobre Tupac Amaru Shakur", author2, "ABC", "engenharia sem putacao");
-			paper4 = new Paper(3, "Estudo Avançado sobre Tupac Amaru Shakur ", author2, "ABC", "engenharia sem putacao");
+			paper4 = new Paper(3, "Estudo AvanÃ§ado sobre Tupac Amaru Shakur ", author2, "ABC", "engenharia sem putacao");
 			paper5 = new Paper(4, "Oceanografia Quantica", author2, "ABC", "engenharia com putacao");
 	
 			paper1.addReviewer(researcher, 0);
 			paper2.addReviewer(researcher, 3);
 			paper3.addReviewer(researcher, -3);
-			paper3.addReviewer(researcher);
+			paper4.addReviewer(researcher);
 	
 			paperList = new ArrayList<Paper>();
 			paperList.add(paper1);
@@ -78,14 +78,14 @@
 	
 		@Test
 		public void testAllocate() {
-			//alocaçao de artigos a membros da conferencia
+			//alocaÃ§ao de artigos a membros da conferencia
 			
 			int dois = 2;
 			
-			conference3.allocate(dois);
-			assertFalse(conference3.areAllPapersReviewed());
+			conference4.allocate(dois);
+			assertFalse(conference4.areAllPapersReviewed());
 			int revisoresPorPaper = 0;
-			List<Paper> papers = conference3.getPapersList();
+			List<Paper> papers = conference4.getPapersList();
 			for(Paper paper: papers){
 				assertFalse(paper.checkReviews());
 				revisoresPorPaper = paper.getReviewers().size();
@@ -134,6 +134,9 @@
 			
 			areAllPapersReviewed = conference3.areAllPapersReviewed();
 			assertFalse(areAllPapersReviewed);
+			
+			areAllPapersReviewed = conference4.areAllPapersReviewed();
+			assertTrue(areAllPapersReviewed);
 	
 			boolean notAllReviewed = false;	
 			for (Paper paper : conference3.getPapersList()) {

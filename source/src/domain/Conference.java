@@ -3,20 +3,14 @@ package domain;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 public class Conference {
 	private int id;
 	private String acronym;
 	private List<Paper> papersList;
 	private List<Researcher> membersList;
-	private boolean areMembersAllocated;
-
-	public Conference(int id, String acronym, List<Researcher> members, List<Paper> papers) { // add
-																								// id
+	public Conference(int id, String acronym, List<Researcher> members, List<Paper> papers) { // add id
 		this.id = id;
 		this.acronym = acronym;
 		this.papersList = papers;
@@ -34,13 +28,13 @@ public class Conference {
 	public void allocate(int numReviewers) {
 		System.out.print("Iniciando alocação \n");
 
-		if (numReviewers < 2 || numReviewers > 5) {
+		/*if (numReviewers < 2 || numReviewers > 5) {
 			// throw exception
-		}
+		} handled on conferenceallocatecommand
 
 		if (numReviewers > membersList.size()) {
 			// throw errooooooou
-		}
+		} no clue what this is for*/
 
 		papersList = orderPapersById(papersList);
 		membersList = orderResearchersById(membersList);
@@ -70,7 +64,7 @@ public class Conference {
 //				tmpCandidatesList = orderResearchersByNumReviews(tmpCandidatesList);
 //				System.out.print("Testando candidatos para o paper: " + firstPaper.getId() + "\n");
 //				for (int k = 0; k < tmpCandidatesList.size(); k++) {
-//					
+//					TUPAC VIVE!!s!
 //					System.out.print("candidate ordenado por numPapers e id?: "
 //							+ tmpCandidatesList.get(k).getNumberOfReviews() + " "
 //							+ tmpCandidatesList.get(k).getId() + "\n");
@@ -97,8 +91,7 @@ public class Conference {
 		}
 	}
 
-	private List<Paper> orderPapersById(List<Paper> aPaperList) { // mudou de
-																	// genareteOrderedePapersList
+	private List<Paper> orderPapersById(List<Paper> aPaperList) { // mudou de generateOrderedPapersList
 		Collections.sort(aPaperList, new Comparator<Paper>() {
 			@Override
 			public int compare(Paper p1, Paper p2) {
@@ -152,7 +145,7 @@ public class Conference {
 
 	public boolean areAllPapersReviewed() {
 		for (Paper paper : papersList) {
-			if (paper.getNotConcludedReviewsList() != null) {
+			if (paper.checkReviews() == false) {
 				return false;
 			}
 		}
@@ -188,9 +181,9 @@ public class Conference {
 	// private List<Researcher> reorderReviewerList(List<Researcher> reviewers)
 	// //agora eh order byNum...
 	// {
-	// return reviewers; //eliminado
+	//eliminado? n precisa mais dessa funcao? wat
 	// }
-
+	
 	// private void removeTopPaper() { //eliminado, usando remove
 	//
 	// }
