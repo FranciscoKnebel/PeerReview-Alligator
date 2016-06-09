@@ -36,11 +36,7 @@ public class ReviewPaperCommand implements ChairHelperInterface {
 		askPaper();
 		askReviewer();
 		askGrade();
-		setReviewGrade();
-	}
-
-	private void setReviewGrade() {
-		selectedPaper.addReviewer(selectedReviewer, selectedGrade);
+		this.selectedPaper.setReviewGrade(this.selectedReviewer, this.selectedGrade);
 	}
 
 	private void showAllocatedPapers() {

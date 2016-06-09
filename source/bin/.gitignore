@@ -1,3 +1,4 @@
-/domain/
-/tests/
 /Interface/
+/domain/
+/libs/
+/tests/

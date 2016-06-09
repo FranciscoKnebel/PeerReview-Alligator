@@ -100,12 +100,18 @@ public class Paper {
 	}
 
 	public void setReviewGrade(Researcher reviewer, float grade) { //
+		boolean hasReviewer = false;
 		for (Review review : reviewsList) {
 			if (review.getReviewer().equals(reviewer)) {
 				review.setGrade(grade);
 				review.setReviewStatus(true);
+				hasReviewer = true;
 			}
 		}
+		if( !hasReviewer ) {
+			System.out.print("Este reviewer não foi alocado para corrigir o artigo\n");
+		}
+		
 	}
 
 	public void addReviewToList(Researcher reviewer, float grade) {
