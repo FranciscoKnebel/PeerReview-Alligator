@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import domain.Paper;
 import domain.Researcher;
+import domain.Review;
 
 public class TestPaper {
 	Researcher author, reviewer, reviewer2;
@@ -69,5 +70,14 @@ public class TestPaper {
 		
 		paper2.setReviewGrade(reviewer2, 0);
 		assertTrue(paper2.checkReviews());
+	}
+	
+	@Test
+	public void testGetNotConcludedReviewsList() {
+		List<Review> notConcludedReviewsList;
+		notConcludedReviewsList = paper.getNotConcludedReviewsList();
+		for (Review review : notConcludedReviewsList) {
+			assertFalse(review.isConcluded());
+		}
 	}
 }
