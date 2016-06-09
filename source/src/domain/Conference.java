@@ -55,13 +55,13 @@ public class Conference {
 				for (int k = 0; k < membersList.size(); k++) {
 
 					Researcher candidate = membersList.get(k);
-					if (candidate.validateForPaper(firstPaper)) {
+					if (candidate.checkCandidate(firstPaper)) {
 						tmpCandidatesList.add(candidate);
 					}
 
 				}
 
-//				tmpCandidatesList = orderResearchersByNumReviews(tmpCandidatesList);
+				tmpCandidatesList = orderResearchersByNumReviews(tmpCandidatesList);
 //				System.out.print("Testando candidatos para o paper: " + firstPaper.getId() + "\n");
 //				for (int k = 0; k < tmpCandidatesList.size(); k++) {
 //					TUPAC VIVE!!s!
