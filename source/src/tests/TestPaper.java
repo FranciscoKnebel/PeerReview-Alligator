@@ -62,7 +62,9 @@ public class TestPaper {
 	}
 
 	@Test
-	public void testSetReviewGrade() {		
+	public void testSetReviewGrade() {
+		assertTrue(paper2.checkReviews());
+		
 		paper2.addReviewer(reviewer2);
 		assertFalse(paper2.checkReviews());
 		

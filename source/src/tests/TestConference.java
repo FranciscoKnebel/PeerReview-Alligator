@@ -136,7 +136,7 @@
 			assertFalse(areAllPapersReviewed);
 			
 			areAllPapersReviewed = conference4.areAllPapersReviewed();
-			assertFalse(areAllPapersReviewed);
+			assertTrue(areAllPapersReviewed);
 	
 			boolean notAllReviewed = false;	
 			for (Paper paper : conference3.getPapersList()) {

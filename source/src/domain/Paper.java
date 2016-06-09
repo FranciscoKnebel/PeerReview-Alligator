@@ -85,16 +85,12 @@ public class Paper {
 	}
 
 	public boolean checkReviews() {
-		if (reviewsList.size() == 0) {
-			return false;
-		}else {
-			for (Review review : reviewsList) {
-				if (review.isConcluded() == false) {
-					return false;
-				}
+		for (Review review : reviewsList) {
+			if (review.isConcluded() == false) {
+				return false;
 			}
-			return true;
 		}
+		return true;
 	}
 
 	public boolean isAllocated() {
@@ -112,10 +108,10 @@ public class Paper {
 				hasReviewer = true;
 			}
 		}
-		if (!hasReviewer) {
+		if( !hasReviewer ) {
 			System.out.print("Este reviewer não foi alocado para corrigir o artigo\n");
 		}
-
+		
 	}
 
 	public void addReviewToList(Researcher reviewer, float grade) {
