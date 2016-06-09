@@ -62,18 +62,6 @@ public class Researcher {
 		return researchTopics;
 	}
 
-	public boolean checkCandidate(Paper paper) {
-		return (!checkAffiliation(paper.getAuthor().affiliation) // nao � da msm
-																	// universidade
-				&& compareResearchTopics(paper.getResearchTopic()) // possui o
-																	// topico de
-																	// pesquisa
-				&& !checkAllocated(paper.getReviewers())); // ainda nao foi
-															// alocado para
-															// revisar esse
-															// artigo
-	}
-
 	private boolean checkAffiliation(String authorAffiliation) { // mudan�a
 		if (this.affiliation.equals(authorAffiliation)) {
 			return true; // autor e revisor sao da mesma universidade

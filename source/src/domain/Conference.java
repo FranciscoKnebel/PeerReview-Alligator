@@ -14,7 +14,6 @@ public class Conference {
 	private List<Paper> papersList;
 	private List<Researcher> membersList;
 	private boolean areMembersAllocated;
-	private List<Researcher> tempList;
 
 	public Conference(int id, String acronym, List<Researcher> members, List<Paper> papers) { // add
 																								// id
@@ -32,18 +31,9 @@ public class Conference {
 		return this.papersList;
 	}
 
-//	private boolean areMembersAllocated(int numReviewers) {
-//		for (Paper paper : papersList) {
-//			if (paper.getReviewers().size() != numReviewers) {
-//				return false;
-//			}
-//		}
-//		return true;
-//	}
-
 	public void allocate(int numReviewers) {
 		System.out.print("Iniciando alocação \n");
-		tempList = new ArrayList<Researcher>();
+
 		if (numReviewers < 2 || numReviewers > 5) {
 			// throw exception
 		}
@@ -52,53 +42,90 @@ public class Conference {
 			// throw errooooooou
 		}
 
-		orderPapers();
-		orderMembers();
+		papersList = orderPapersById(papersList);
+		membersList = orderResearchersById(membersList);
 		
 		for (int i = 0; i < numReviewers; i++) {
-			System.out.print("Iterando : " + numReviewers + "\n");
 			List<Paper> tmpPaperList = new ArrayList<Paper>(papersList);
-			
-			int tmpPaperListSize = tmpPaperList.size();
+
 			int numberOfPapers = papersList.size();
 
-			System.out.print("Papers Restantes: " + tmpPaperListSize + "\n");
-			
+
 			for (int j = 0; j < numberOfPapers; j++) {
-				
+
 				List<Researcher> tmpCandidatesList = new ArrayList<Researcher>();
+
+				Paper firstPaper = getFirstPaper(tmpPaperList);
 				
-				Paper firstPaper = tmpPaperList.get(0);
-				System.out.print("Testando candidatos para o paper: " + firstPaper.getId() + "\n");
-				
+
 				for (int k = 0; k < membersList.size(); k++) {
-					
+
 					Researcher candidate = membersList.get(k);
 					if (candidate.validateForPaper(firstPaper)) {
-						System.out.print("candidate ordenado por id?: " + candidate.getId() + "\n");
 						tmpCandidatesList.add(candidate);
 					}
-					
+
 				}
-				
-				tmpCandidatesList = orderResearchersByAllocatedPapersForConference(tmpCandidatesList, this);
-				
-				for (int k = 0; k < tmpCandidatesList.size(); k++) {
-						System.out.print("candidate ordenado por numPapers e id?: "+ tmpCandidatesList.get(k).getNumberOfAllocatedPapersForConference(this) + " " + tmpCandidatesList.get(k).getId() + "\n");
-					}
-					
+
+//				tmpCandidatesList = orderResearchersByNumReviews(tmpCandidatesList);
+//				System.out.print("Testando candidatos para o paper: " + firstPaper.getId() + "\n");
+//				for (int k = 0; k < tmpCandidatesList.size(); k++) {
+//					
+//					System.out.print("candidate ordenado por numPapers e id?: "
+//							+ tmpCandidatesList.get(k).getNumberOfReviews() + " "
+//							+ tmpCandidatesList.get(k).getId() + "\n");
+//				}
+
 				Researcher firstCandidate = getFirstCandidate(tmpCandidatesList);
-				tempList.add(firstCandidate);
-				firstCandidate.incrementNumberOfAllocatedPapersForConference(this);
+	
+				showAllocationLog(firstPaper, firstCandidate);
+
+				firstPaper.addReviewer(firstCandidate);
 				tmpPaperList.remove(firstPaper);
 				
-				tmpCandidatesList = new ArrayList<Researcher>();
-				
-				System.out.print("Artigo ID: " + firstPaper.getId() + " alocado ao revisor ID: " + firstCandidate.getId()+ "\n");
 			}
 		}
-//		areMembersAllocated = areMembersAllocated(numReviewers); implement
+		// areMembersAllocated = areMembersAllocated(numReviewers); implement
 
+	}
+
+	private void showAllocationLog(Paper paper, Researcher researcher) {
+		if (researcher == null) {
+			System.out.print("Artigo ID: " + paper.getId() + " não tem possíveis candidatos" + "\n");
+		} else {
+			System.out.print("Artigo ID: " + paper.getId() + " alocado ao revisor ID: " + researcher.getId() + "\n");
+		}
+	}
+
+	private List<Paper> orderPapersById(List<Paper> aPaperList) { // mudou de
+																	// genareteOrderedePapersList
+		Collections.sort(aPaperList, new Comparator<Paper>() {
+			@Override
+			public int compare(Paper p1, Paper p2) {
+				return p1.getId() - p2.getId();
+			}
+		});
+		return aPaperList;
+	}
+
+	private List<Researcher> orderResearchersById(List<Researcher> aResearcherList) {
+		Collections.sort(aResearcherList, new Comparator<Researcher>() {
+			@Override
+			public int compare(Researcher p1, Researcher p2) {
+				return p1.getId() - p2.getId();
+			}
+		});
+		return aResearcherList;
+	}
+
+	private List<Researcher> orderResearchersByNumReviews(List<Researcher> aResearcherList) {
+		Collections.sort(aResearcherList, new Comparator<Researcher>() {
+			@Override
+			public int compare(Researcher p1, Researcher p2) {
+				return p1.getNumberOfReviews() - p2.getNumberOfReviews();
+			}
+		});
+		return aResearcherList;
 	}
 
 	public List<Paper> getAcceptedPapers() {
@@ -136,42 +163,6 @@ public class Conference {
 		return this.id;
 	}
 
-	private Comparator<Paper> orderPapersById = new Comparator<Paper>() {
-		@Override
-		public int compare(Paper p1, Paper p2) {
-			return p1.getId() - p2.getId();
-		}
-	};
-
-	private Comparator<Researcher> orderResearchersById = new Comparator<Researcher>() {
-		@Override
-		public int compare(Researcher r1, Researcher r2) {
-			return r1.getId() - r2.getId();
-		}
-	};
-
-	private List<Researcher> orderResearchersByAllocatedPapersForConference(List<Researcher> researchers,
-			Conference conference) {
-		Collections.sort(researchers, new Comparator<Researcher>() {
-			@Override
-			public int compare(Researcher r1, Researcher r2) {
-				Integer diff = r1.getNumberOfAllocatedPapersForConference(conference)
-						- r2.getNumberOfAllocatedPapersForConference(conference);
-				return (diff == 0) ? r1.getId() - r2.getId() : diff;
-			}
-		});
-		return researchers;
-	};
-
-	private void orderPapers() { // mudou de genareteOrderedePapersList
-		Collections.sort(papersList, new Comparator<Paper>() {
-			@Override
-			public int compare(Paper p1, Paper p2) {
-				return p1.getId() - p2.getId();
-			}
-		});
-	}
-
 	private void orderPapersByMeanGrade(List<Paper> aPaperList) { // ordem
 																	// decrescente
 		Collections.sort(aPaperList, new Comparator<Paper>() {
@@ -182,43 +173,29 @@ public class Conference {
 		});
 	}
 
-	private void orderMembers() {
-		Collections.sort(membersList, new Comparator<Researcher>() {
-			@Override
-			public int compare(Researcher p1, Researcher p2) {
-				return p1.getId() - p2.getId();
-			}
-		});
-	}
-
 	private Paper getFirstPaper(List<Paper> papers) {
 		return papers.get(0);
 	}
 
 	private Researcher getFirstCandidate(List<Researcher> candidates) {
-		return candidates.get(0);
+		if (candidates.size() == 0) {
+			return null;
+		} else {
+			return candidates.get(0);
+		}
 	}
 
 	// private List<Researcher> reorderReviewerList(List<Researcher> reviewers)
+	// //agora eh order byNum...
 	// {
 	// return reviewers; //eliminado
 	// }
 
-	// private void removeTopPaper() { //eliminado,
+	// private void removeTopPaper() { //eliminado, usando remove
 	//
 	// }
 	//
-	// private void addReviewerToTempList(Researcher researcher) { //nao usa
-	// mais
-	//
-	// }
-	//
-	// private void saveReviewers(List<Researcher> tempList) { //nao usa
-	//
-	// }
 
-	// private void showAllocationLog() { //implementar
-	//
 	// }
 
 }

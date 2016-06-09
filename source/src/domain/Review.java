@@ -19,7 +19,6 @@ public class Review {
 	public Review(Researcher reviewer) {
 		if(this.reviewer == null) {
 			this.reviewer = reviewer;
-			reviewer.incrementNumberOfReviews();
 		}
 		
 		setReviewStatus(false);
