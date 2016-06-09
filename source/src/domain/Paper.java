@@ -3,6 +3,8 @@ package domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import Interface.ui.text.UIUtils;
+
 public class Paper {
 
 	private int id;
@@ -12,7 +14,7 @@ public class Paper {
 	private String conference;
 	private List<Review> reviewsList;
 
-	public Paper(int id, String title, Researcher author, String conference, String researchTopic) { // mudanca
+	public Paper(int id, String title, Researcher author, String conference, String researchTopic) {
 		this.id = id;
 		this.title = title;
 		this.author = author;
@@ -85,12 +87,16 @@ public class Paper {
 	}
 
 	public boolean checkReviews() {
-		for (Review review : reviewsList) {
-			if (review.isConcluded() == false) {
-				return false;
+		if (reviewsList.size() == 0) {
+			return false;
+		}else {
+			for (Review review : reviewsList) {
+				if (review.isConcluded() == false) {
+					return false;
+				}
 			}
+			return true;
 		}
-		return true;
 	}
 
 	public boolean isAllocated() {
@@ -99,7 +105,9 @@ public class Paper {
 		return false;
 	}
 
-	public void setReviewGrade(Researcher reviewer, float grade) { //
+	public void setReviewGrade(Researcher reviewer, float grade) {
+		UIUtils uiUtils = UIUtils.INSTANCE;
+		
 		boolean hasReviewer = false;
 		for (Review review : reviewsList) {
 			if (review.getReviewer().equals(reviewer)) {
@@ -108,18 +116,17 @@ public class Paper {
 				hasReviewer = true;
 			}
 		}
-		if( !hasReviewer ) {
-			System.out.print("Este reviewer não foi alocado para corrigir o artigo\n");
+		if (!hasReviewer) {
+			System.out.println(uiUtils.getTextManager().getText("message.invalidReviewer"));
 		}
-		
+
 	}
 
 	public void addReviewToList(Researcher reviewer, float grade) {
 		reviewsList.add(new Review(reviewer, grade));
 	}
 
-	public List<Review> getNotConcludedReviewsList() { // mudanca --->>era o
-														// showReviewers
+	public List<Review> getNotConcludedReviewsList() {
 		List<Review> notConcludedReviewsList = new ArrayList<Review>();
 
 		for (Review review : reviewsList) {

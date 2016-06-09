@@ -45,35 +45,7 @@ public class TestResearcher {
 		conference = new Conference(0, "ABC", null, null);
 	}
 	
-	@Test
-	public void testGetNumberOfAllocatedPapersForConference() {
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 0);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(null) == 0);
-		researcher.incrementNumberOfAllocatedPapersForConference(conference);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 1);
-		researcher.decrementNumberOfAllocatedPapers(conference);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 0);
-	}
 	
-	@Test
-	public void testIncrementNumberOfAllocatedPapersForConference() {
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 0);
-		researcher.incrementNumberOfAllocatedPapersForConference(conference);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 1);
-		researcher.incrementNumberOfAllocatedPapersForConference(conference);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 2);
-	}
-	
-	@Test
-	public void testDecrementNumberOfAllocatedPapers() {
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 0);
-		//researcher.decrementNumberOfAllocatedPapers(conference);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 0);
-		researcher.incrementNumberOfAllocatedPapersForConference(conference);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 1);
-		researcher.decrementNumberOfAllocatedPapers(conference);
-		assertTrue(researcher.getNumberOfAllocatedPapersForConference(conference) == 0);
-	}
 	
 	@Test
 	public void testIncrementNumberOfReviews() {

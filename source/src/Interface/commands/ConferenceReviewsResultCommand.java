@@ -60,7 +60,7 @@ public class ConferenceReviewsResultCommand implements ChairHelperInterface {
 		}
 	}
 
-	private void showList(List<Paper> Papers, boolean acceptedPapers) { //
+	private void showList(List<Paper> Papers, boolean acceptedPapers) {
 		System.out.println();
 		if(acceptedPapers) {
 			System.out.println(textManager.getText("message.conference.acceptedPapers"));
@@ -75,7 +75,7 @@ public class ConferenceReviewsResultCommand implements ChairHelperInterface {
 		System.out.println(textManager.getText("message.pendingReview", Integer.toString(selectedConference.getId())));
 	}
 	
-	private void printPapers(List<Paper> Papers) { //
+	private void printPapers(List<Paper> Papers) {
 		for(Paper paper: Papers) {
 			System.out.println(paper.getId() + "| " + paper.getTitle() + ": " + paper.getMeanGrade());
 		}

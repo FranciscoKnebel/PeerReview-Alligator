@@ -55,6 +55,7 @@ public class ChairHelperUI implements ChairHelperInterface {
 
 	protected String getMenu(TextManager textManager) {
 		StringBuffer sb = new StringBuffer();
+		sb.append(textManager.getText("application.title")).append("\n");
 		sb.append(textManager.getText("message.options", EXIT_CODE, false)).append(":\n");
 		for (String key : actions.keySet()) {
 			ChairHelperInterface action = actions.get(key);

@@ -5,12 +5,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import Interface.ui.TextManager;
+import Interface.ui.text.UIUtils;
+
 public class Conference {
 	private int id;
 	private String acronym;
 	private List<Paper> papersList;
 	private List<Researcher> membersList;
-	public Conference(int id, String acronym, List<Researcher> members, List<Paper> papers) { // add id
+	
+	public Conference(int id, String acronym, List<Researcher> members, List<Paper> papers) {
 		this.id = id;
 		this.acronym = acronym;
 		this.papersList = papers;
@@ -25,17 +29,13 @@ public class Conference {
 		return this.papersList;
 	}
 
-	public void allocate(int numReviewers) {
-		System.out.print("Iniciando alocação \n");
-
-		/*if (numReviewers < 2 || numReviewers > 5) {
-			// throw exception
-		} handled on conferenceallocatecommand
-
-		if (numReviewers > membersList.size()) {
-			// throw errooooooou
-		} no clue what this is for*/
-
+	public List<String> allocate(int numReviewers) {
+		UIUtils uiUtils = UIUtils.INSTANCE;
+		TextManager textManager = uiUtils.getTextManager();
+		
+		List<String> log = new ArrayList<>();
+		log.add(textManager.getText("log.initiation"));
+		
 		papersList = orderPapersById(papersList);
 		membersList = orderResearchersById(membersList);
 		
@@ -44,54 +44,46 @@ public class Conference {
 
 			int numberOfPapers = papersList.size();
 
-
-			for (int j = 0; j < numberOfPapers; j++) {
-
-				List<Researcher> tmpCandidatesList = new ArrayList<Researcher>();
-
-				Paper firstPaper = getFirstPaper(tmpPaperList);
-				
-
-				for (int k = 0; k < membersList.size(); k++) {
-
-					Researcher candidate = membersList.get(k);
-					if (candidate.validateForPaper(firstPaper)) {
-						tmpCandidatesList.add(candidate);
-					}
-
-				}
-
-//				tmpCandidatesList = orderResearchersByNumReviews(tmpCandidatesList);
-//				System.out.print("Testando candidatos para o paper: " + firstPaper.getId() + "\n");
-//				for (int k = 0; k < tmpCandidatesList.size(); k++) {
-//					TUPAC VIVE!!s!
-//					System.out.print("candidate ordenado por numPapers e id?: "
-//							+ tmpCandidatesList.get(k).getNumberOfReviews() + " "
-//							+ tmpCandidatesList.get(k).getId() + "\n");
-//				}
-
-				Researcher firstCandidate = getFirstCandidate(tmpCandidatesList);
+			log.addAll(sortAllocations(tmpPaperList, numberOfPapers, textManager));
+		}
+		
+		log.add(textManager.getText("log.end"));
+		return log;
+	}
 	
-				showAllocationLog(firstPaper, firstCandidate);
+	private List<String> sortAllocations(List<Paper> tmpPaperList, int numberOfPapers, TextManager textManager) {
+		List<String> log = new ArrayList<>();
+		
+		for (int j = 0; j < numberOfPapers; j++) {
+			List<Researcher> tmpCandidatesList = new ArrayList<Researcher>();
 
-				firstPaper.addReviewer(firstCandidate);
-				tmpPaperList.remove(firstPaper);
-				
-			}
+			Paper firstPaper = getFirstPaper(tmpPaperList);
+
+			tmpCandidatesList = qualifyCandidate(firstPaper);
+
+			tmpCandidatesList = orderResearchersByNumReviews(tmpCandidatesList);
+
+			Researcher firstCandidate = getFirstCandidate(tmpCandidatesList);
+
+			log.add(getCandidateInfo(firstCandidate, firstPaper, textManager));
+			
+			firstPaper.addReviewer(firstCandidate);
+			tmpPaperList.remove(firstPaper);
 		}
-		// areMembersAllocated = areMembersAllocated(numReviewers); implement
-
+		
+		return log;
 	}
 
-	private void showAllocationLog(Paper paper, Researcher researcher) {
+	private String getCandidateInfo(Researcher researcher, Paper paper, TextManager textManager){
 		if (researcher == null) {
-			System.out.print("Artigo ID: " + paper.getId() + " não tem possíveis candidatos" + "\n");
+			return textManager.getText("log.candidateNull", Integer.toString(paper.getId()));
 		} else {
-			System.out.print("Artigo ID: " + paper.getId() + " alocado ao revisor ID: " + researcher.getId() + "\n");
+			String[] args = {Integer.toString(paper.getId()), Integer.toString(researcher.getId())};
+			return textManager.getText("log.candidate", args);
 		}
 	}
 
-	private List<Paper> orderPapersById(List<Paper> aPaperList) { // mudou de generateOrderedPapersList
+	private List<Paper> orderPapersById(List<Paper> aPaperList) {
 		Collections.sort(aPaperList, new Comparator<Paper>() {
 			@Override
 			public int compare(Paper p1, Paper p2) {
@@ -156,8 +148,7 @@ public class Conference {
 		return this.id;
 	}
 
-	private void orderPapersByMeanGrade(List<Paper> aPaperList) { // ordem
-																	// decrescente
+	private void orderPapersByMeanGrade(List<Paper> aPaperList) {
 		Collections.sort(aPaperList, new Comparator<Paper>() {
 			@Override
 			public int compare(Paper p1, Paper p2) {
@@ -177,18 +168,18 @@ public class Conference {
 			return candidates.get(0);
 		}
 	}
-
-	// private List<Researcher> reorderReviewerList(List<Researcher> reviewers)
-	// //agora eh order byNum...
-	// {
-	//eliminado? n precisa mais dessa funcao? wat
-	// }
 	
-	// private void removeTopPaper() { //eliminado, usando remove
-	//
-	// }
-	//
-
-	// }
+	private List<Researcher> qualifyCandidate(Paper firstPaper) {
+		List<Researcher> candidateList = new ArrayList<Researcher>();
+		
+		for (int k = 0; k < membersList.size(); k++) {
+			Researcher candidate = membersList.get(k);
+			if (candidate.checkCandidate(firstPaper)) {
+				candidateList.add(candidate);
+			}
+		}
+		
+		return candidateList;
+	}
 
 }

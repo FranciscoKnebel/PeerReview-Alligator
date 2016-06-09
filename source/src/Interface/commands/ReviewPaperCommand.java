@@ -6,6 +6,7 @@ import java.util.Collection;
 import Interface.ChairHelperInterface;
 import Interface.exceptions.PaperNotFoundException;
 import Interface.exceptions.ReviewerNotFoundException;
+import Interface.ui.TextManager;
 import Interface.ui.text.UIUtils;
 import domain.Database;
 import domain.Paper;
@@ -13,8 +14,8 @@ import domain.Researcher;
 
 public class ReviewPaperCommand implements ChairHelperInterface {
 
-	private Collection<Paper> paperList; // mudança
-	private Collection<Researcher> researcherList; //
+	private Collection<Paper> paperList;
+	private Collection<Researcher> researcherList;
 	private Database database;
 	
 	private Paper selectedPaper;
@@ -22,10 +23,12 @@ public class ReviewPaperCommand implements ChairHelperInterface {
 	private int selectedGrade;
 	
 	private UIUtils uiUtils;
+	private TextManager textManager;
 
 	public ReviewPaperCommand(UIUtils uiUtils, Database database) {
 		this.database = database;
 		this.uiUtils = uiUtils;
+		this.textManager = uiUtils.getTextManager();
 	}
 	
 	public void execute() {
@@ -43,7 +46,7 @@ public class ReviewPaperCommand implements ChairHelperInterface {
 		Collection<Paper> allocatedPapers = getAllocatedPapers();
 		
 		for(Paper paper : allocatedPapers)
-			System.out.println( paper.getId() + ": " + paper.getTitle());
+			System.out.println(paper.getId() + ": " + paper.getTitle());
 	}
 
 	private void askPaper() {
@@ -59,7 +62,7 @@ public class ReviewPaperCommand implements ChairHelperInterface {
 			}
 			
 			if(this.selectedPaper == null)
-				throw new PaperNotFoundException(uiUtils.getTextManager().getText("exception.paperNotFound"));
+				throw new PaperNotFoundException(textManager.getText("exception.paperNotFound"));
 		} catch (PaperNotFoundException e) {
 			System.out.println(e.getMessage());
 			askPaper();
@@ -79,7 +82,7 @@ public class ReviewPaperCommand implements ChairHelperInterface {
 			}
 			
 			if(this.selectedReviewer == null)
-				throw new ReviewerNotFoundException(uiUtils.getTextManager().getText("exception.reviewerNotFound"));
+				throw new ReviewerNotFoundException(textManager.getText("exception.reviewerNotFound"));
 		} catch (ReviewerNotFoundException e) {
 			System.out.println(e.getMessage());
 			askReviewer();

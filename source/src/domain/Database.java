@@ -72,15 +72,15 @@ public class Database {
 		return null;
 	}
 
-	public void save(Conference conference) { //trocar três save por um, com 3 overloads
+	public void save(Conference conference) {
 		this.conferenceList.add(conference);
 	}
 
-	public void save(Paper paper) { //trocar três save por um, com 3 overloads
+	public void save(Paper paper) {
 		this.paperList.add(paper);
 	}
 
-	public void save(Researcher researcher) { //trocar três save por um, com 3 overloads
+	public void save(Researcher researcher) {
 		this.researcherList.add(researcher);
 	}
 	

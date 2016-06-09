@@ -8,6 +8,7 @@ import domain.Conference;
 import domain.Database;
 
 import java.util.Collection;
+import java.util.List;
 
 
 public class ConferenceAllocateCommand implements ChairHelperInterface {
@@ -21,6 +22,8 @@ public class ConferenceAllocateCommand implements ChairHelperInterface {
 	private int selectedNumReviewers;
 	
 	private Collection<Conference> conferencesList;
+	private static final int minReviewers = 2;
+	private static final int maxReviewers = 5;
 	
 	public ConferenceAllocateCommand(UIUtils uiUtils, Database database){
 		this.database = database;
@@ -49,7 +52,7 @@ public class ConferenceAllocateCommand implements ChairHelperInterface {
 		try {
 			this.selectedNumReviewers = uiUtils.readInteger("message.conference.reviewers");
 			
-			if(this.selectedNumReviewers < 2 || this.selectedNumReviewers > 5) {
+			if(this.selectedNumReviewers < minReviewers || this.selectedNumReviewers > maxReviewers) {
 				throw new ArgumentOutOfRangeException(uiUtils.getTextManager().getText("exception.argumentOutOfRange"));
 			}
 		} catch (ArgumentOutOfRangeException e) {
@@ -67,7 +70,8 @@ public class ConferenceAllocateCommand implements ChairHelperInterface {
 		askConference();
 		askNumReviewers();
 		
-		selectedConference.allocate(this.selectedNumReviewers);
+		List<String> log = selectedConference.allocate(this.selectedNumReviewers);
+		showAllocationLog(log);
 	}
 	
 	private Conference searchConference( int conferenceId ) {
@@ -77,5 +81,10 @@ public class ConferenceAllocateCommand implements ChairHelperInterface {
 			}
 		}
 		return null;
+	}
+	
+	private void showAllocationLog(List<String> log) {
+		for(String line: log)
+			System.out.println(line);
 	}
 }
